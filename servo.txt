@@ -53,5 +53,5 @@ void ejecutarComando(String cmd) {
     myservo3.write(120);  // Extremo derecho
   }
 
-  // También podrías agregar más comandos si querés controlar la garra y el brazo
+
 }
