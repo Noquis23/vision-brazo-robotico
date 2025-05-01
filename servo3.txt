@@ -1,0 +1,65 @@
+Par con servo_movimiento.py
+
+
+#include <Servo.h>
+
+Servo myservo1; // garra
+Servo myservo2; // brazo
+Servo myservo3; // base
+
+int pos1 = 0;  // garra
+int pos2 = 0;  // brazo
+int pos3 = 105;  // base
+
+String comando = "";
+
+void setup() {
+  myservo1.attach(9);
+  myservo2.attach(2);
+  myservo3.attach(7);
+  Serial.begin(9600);
+
+  myservo1.write(pos1);
+  myservo2.write(pos2);
+  myservo3.write(pos3);
+}
+
+void loop() {
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == '\n') {
+      ejecutarComando(comando);
+      comando = "";
+    } else {
+      comando += c;
+    }
+  }
+}
+
+void ejecutarComando(String cmd) {
+  if (cmd == "izq1") myservo3.write(90);
+  else if (cmd == "izq2") myservo3.write(95);
+  else if (cmd == "izq3") myservo3.write(100);
+  else if (cmd == "ctr") myservo3.write(105);
+  else if (cmd == "der3") myservo3.write(110);
+  else if (cmd == "der2") myservo3.write(115);
+  else if (cmd == "der1") myservo3.write(120);
+
+  else if (cmd == "arriba" && pos2 < 40) {
+    pos2 += 2;
+    myservo2.write(pos2);
+  }
+  else if (cmd == "abajo" && pos2 > 0) {
+    pos2 -= 2;
+    myservo2.write(pos2);
+  }
+
+  else if (cmd == "abrir" && pos1 > 0) {
+    pos1 -= 2;
+    myservo1.write(pos1);
+  }
+  else if (cmd == "cerrar" && pos1 < 80) {
+    pos1 += 2;
+    myservo1.write(pos1);
+  }
+}

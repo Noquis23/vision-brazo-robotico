@@ -1,0 +1,57 @@
+#include <Servo.h>
+
+Servo myservo1; // garra
+Servo myservo2; // medio
+Servo myservo3; // base
+
+int servoPin1 = 9;
+int servoPin2 = 2;
+int servoPin3 = 7;
+
+String comando = "";
+
+void setup() {
+  myservo1.attach(servoPin1);
+  myservo2.attach(servoPin2);
+  myservo3.attach(servoPin3);
+
+  Serial.begin(9600);
+
+  // Posiciones iniciales
+  myservo1.write(0);
+  myservo2.write(0);
+  myservo3.write(100);
+}
+
+void loop() {
+  // Leer comando desde el puerto serial
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == '\n') {
+      ejecutarComando(comando);
+      comando = "";  // Limpiar para el próximo comando
+    } else {
+      comando += c;
+    }
+  }
+}
+
+void ejecutarComando(String cmd) {
+  if (cmd == "izq1") {
+    myservo3.write(90);  // Extremo izquierdo
+  } else if (cmd == "izq2") {
+    myservo3.write(95);
+  } else if (cmd == "izq3") {
+    myservo3.write(100);
+  } else if (cmd == "ctr") {
+    myservo3.write(105);  // Centro
+  } else if (cmd == "der3") {
+    myservo3.write(110);
+  } else if (cmd == "der2") {
+    myservo3.write(115);
+  } else if (cmd == "der1") {
+    myservo3.write(120);  // Extremo derecho
+  }
+
+  // También podrías agregar más comandos si querés controlar la garra y el brazo
+}
